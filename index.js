@@ -26,13 +26,23 @@ async function run() {
         const bikeCollection = database.collection('bikes')
         const ordersCollection = database.collection('orders')
         const usersCollection = database.collection('users')
-
+        const reviewsCollection = database.collection("reviews")
 
         // GET API 
         app.get('/bikes', async (req, res) => {
             const cursor = bikeCollection.find({})
             const bikes = await cursor.toArray()
             res.send(bikes)
+        })
+        // delete product 
+
+        app.delete('/bikes/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const result = await bikeCollection.deleteOne(query);
+            // console.log('Delate id', result);
+            res.json(result);
+
         })
 
         // GET SINGLE API
@@ -124,6 +134,21 @@ async function run() {
             res.json(result)
         }
         )
+
+
+        app.get('/reviews', async (req, res) => {
+            const cursor = reviewsCollection.find({})
+            const reviews = await cursor.toArray();
+            res.send(reviews);
+        })
+
+        app.post('/reviews', async (req, res) => {
+            const review = req.body;
+            const result = await reviewsCollection.insertOne(review);
+            res.json(result)
+            // console.log("hitting post");
+            res.send('inside post');
+        })
 
     }
 
