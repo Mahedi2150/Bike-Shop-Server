@@ -35,7 +35,6 @@ async function run() {
             res.send(bikes)
         })
         // delete product 
-
         app.delete('/bikes/:id', async (req, res) => {
             const id = req.params.id;
             const query = { _id: ObjectId(id) };
